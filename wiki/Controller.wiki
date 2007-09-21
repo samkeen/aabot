@@ -1,0 +1,7 @@
+#summary brainstorming notes for controller
+
+= Controller =
+
+* general controller
+
+ 
