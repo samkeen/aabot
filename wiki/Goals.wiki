@@ -2,9 +2,16 @@
 
 = Goals =
 
+Model
+
+Controller
+
+View
 
 
 
 
+
+ 
  
  
