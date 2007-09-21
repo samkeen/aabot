@@ -1,0 +1,8 @@
+#summary brainstorming for the View layer
+
+= View =
+
+* simple php snippets to start
+* lightweight layout engine
+
+ 
