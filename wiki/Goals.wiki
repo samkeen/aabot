@@ -2,16 +2,17 @@
 
 = Goals =
 
-Model
+[Model]
 
-Controller
+[Controller]
 
-View
-
-
+[View]
 
 
 
+
+
+ 
  
  
  
