@@ -4,4 +4,12 @@
 
 * general controller
 
+
+
+==the process method==
+
+called as `process($action)`
+* set the action for the controller
+
+
  
