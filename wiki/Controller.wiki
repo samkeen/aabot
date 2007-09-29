@@ -9,7 +9,11 @@
 ==the process method==
 
 called as `process($action)`
-* set the action for the controller
+
+  * set the action for the controller
+  * determine if controller has $this->$action
+    * true
+    * false
 
 
  
