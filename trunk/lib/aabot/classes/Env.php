@@ -3,6 +3,7 @@ class Env {
 	
 	private $base_path;
 	private $base_attributes = array();
+	public $logger;
 	
 	
 	public function __construct($context_path=null) {

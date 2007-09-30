@@ -12,6 +12,8 @@ function __autoload($class) {
 		require $context_path . "/lib/aabot/classes/" . str_replace('_', '/', $class) . '.php';
 	}
 }
-$bs = new Bootstrapper(new Env($context_path));
+$env = new Env($context_path);
+$env->logger = $logger;
+$bs = new Bootstrapper($env);
 $bs->strap();
 ?>

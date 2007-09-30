@@ -1,5 +1,6 @@
 <?php
 class Base_Controller {
+	protected $logger;
 	protected $env;
 	protected $template_path;
 	protected $template_contents;
@@ -15,8 +16,9 @@ class Base_Controller {
 
 	protected $action;
 	
-	public function __construct($env) {
+	public function __construct(Env $env) {
 		$this->env = $env;
+		$this->logger = $env->logger;
 		$this->p_ = new SimpleDTO();
 		$this->setLayout();
 	}
@@ -26,6 +28,7 @@ class Base_Controller {
 	 * @param string $action
 	 */
 	public function process($action) {
+		$this->logger->debug(__METHOD__.' for action [' . $action .']');
 		$this->action = $action;
 		$this->setTemplate();
 		if($this->actionExists()) {

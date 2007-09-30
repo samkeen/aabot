@@ -11,7 +11,7 @@ class Log_File_Writer extends Log_Writer {
          exit;
     }
     // Write $somecontent to our opened file.
-    if (fwrite($handle, $log_message) === FALSE) {
+    if (fwrite($handle, $log_message."\n") === FALSE) {
         echo "[".__METHOD__."] Cannot write to file ($this->log_file_path)";
         exit;
     }
