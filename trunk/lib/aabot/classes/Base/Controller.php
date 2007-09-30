@@ -37,7 +37,7 @@ class Base_Controller {
 		} else {
 			$this->logger->info(__METHOD__.' Action NOT found [' . $action .']');
 		}
-		// STOP flow if we are expecting a layout and it does NOT exist
+		// STOP flow if we are expecting a layout but it does NOT exist
 		if ($this->usingLayout() && ! $this->layoutExists()) {
 			$this->logger->error(__METHOD__.' Using Layout ['.$this->layout_path.'] but does NOT exist');
 			die("Couldn't find the expected layout: ".$this->layout_path);
@@ -67,13 +67,13 @@ class Base_Controller {
 	 * Stores the path to the layout file.
 	 */
 	private function setLayout() {
-		$this->layout_path = file_exists($this->env->dir_layout . '/' . str_replace('controller_','',get_class($this)) . '.php')
-			? $this->env->dir_layout . '/' . str_replace('controller_','',get_class($this)) . '.php'
+		$this->layout_path = file_exists($this->env->dir_layout . '/' . str_replace('Controller_','',get_class($this)) . '.php')
+			? $this->env->dir_layout . '/' . str_replace('Controller_','',get_class($this)) . '.php'
 			: $this->env->dir_layout . '/default.php';
 	}
 	private function setTemplate() {
-		$this->template_path = file_exists($this->env->dir_view . '/' . str_replace('controller_','',get_class($this)) . '/' . $this->action . '.php')
-			? $this->env->dir_view . '/' . str_replace('controller_','',get_class($this)) . '/' . $this->action . '.php'
+		$this->template_path = file_exists($this->env->dir_view . '/' . str_replace('Controller_','',get_class($this)) . '/' . $this->action . '.php')
+			? $this->env->dir_view . '/' . str_replace('Controller_','',get_class($this)) . '/' . $this->action . '.php'
 			: null;
 	}
 	/**
