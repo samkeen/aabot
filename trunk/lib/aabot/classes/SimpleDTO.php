@@ -1,4 +1,8 @@
 <?php
+/**
+ * Lightweight, simple DTO
+ *
+ */
 class SimpleDTO {
 	
 	private $base_attributes = array();

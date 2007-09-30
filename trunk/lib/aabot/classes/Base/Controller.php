@@ -28,27 +28,40 @@ class Base_Controller {
 	 * @param string $action
 	 */
 	public function process($action) {
-		$this->logger->debug(__METHOD__.' for action [' . $action .']');
+		$this->logger->debug(__METHOD__.' Calling process for action [' . $action .']');
 		$this->action = $action;
 		$this->setTemplate();
 		if($this->actionExists()) {
+			$this->logger->debug(__METHOD__.' Action [' . $action .'] Found on Controller [' . get_class($this) . '], now invoking');
 			$this->$action();
-		} else if ($this->layoutExists() && $this->templateExists()) {
-			$this->renderLayout();
+		} else {
+			$this->logger->info(__METHOD__.' Action NOT found [' . $action .']');
+		}
+		// STOP flow if we are expecting a layout and it does NOT exist
+		if ($this->usingLayout() && ! $this->layoutExists()) {
+			$this->logger->error(__METHOD__.' Using Layout ['.$this->layout_path.'] but does NOT exist');
+			die("Couldn't find the expected layout: ".$this->layout_path);
+		}
+		if ($this->templateExists()) {
+			$this->logger->debug(__METHOD__.' Template ['.$this->template_path.'] WAS found');
+			$this->renderView();
 		} else { // action method not found on controller and no template found
-			$message = "Action [$action] was not found for Controller " .get_class($this);
-			die($message);
+			$this->logger->error(__METHOD__.' Template ['.$this->template_path.'] NOT found');
+			die("Couldn't find the expected template: ".$this->template_path);
 		}
 	}
 	/**
 	 * Called from the implementing controller in order
 	 * to render the completed page.
 	 */
-	protected function renderLayout() {
+	protected function renderView() {
 		$this->digestTemplate();
-		// set a short name ref to $this->p_ for ease of use in the view.
-		$p_ = $this->p_;
-		include($this->layout_path);
+		if ($this->usingLayout()) {
+			// set a short name ref to $this->p_ for ease of use in the view.
+			$p_ = $this->p_;
+			include($this->layout_path);
+		}
+		
 	}
 	/**
 	 * Stores the path to the layout file.
@@ -73,14 +86,19 @@ class Base_Controller {
 		// set a short name ref to $this->p_ for ease of use in the view.
 		$p_ = $this->p_;
 		include($this->template_path);
-		/**
-		 * pull back any mutations of $p_ into $this->p_
-		 * This allows templates to inject values into the 
-		 * surrounding layout. (ex. define a stylesheet of js import)
-		 */
-		$this->p_ = $p_;
-		$this->template_contents = ob_get_contents();
-		ob_end_clean();
+		if ($this->usingLayout()) {
+			$this->logger->debug(__METHOD__.' Using Layout [' . $this->layout_path . ']');
+			/**
+			 * pull back any mutations of $p_ into $this->p_
+			 * This allows templates to inject values into the 
+			 * surrounding layout. (ex. define a stylesheet of js import)
+			 */
+			$this->p_ = $p_;
+			$this->template_contents = ob_get_contents();
+			ob_end_clean();
+		} else {
+			$this->logger->debug(__METHOD__.' Not using Layout (layout_path has been set to null)');
+		}
 	}
 	private function actionExists() {
 		return method_exists($this,$this->action);

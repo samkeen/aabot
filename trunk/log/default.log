@@ -4,3 +4,94 @@
 [DEBUG] Base_Controller::process for action [bar]
 [DEBUG] Logger Awake
 [DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Action NOT found [bar] Template [] and Layout [] found
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Action NOT found [bar] Template [] and Layout [] found
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Action NOT found [bar] Template [] and Layout [] found
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Action NOT found [bar] Template [] and Layout [] found
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Action NOT found [bar] Template [] and Layout [] found
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Action NOT found [bar] Template [] and Layout [] found
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Template [/www/aabot/app/view/foo/bar.php] WAS found
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Template [/www/aabot/app/view/foo/bar.php] WAS found
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Template [/www/aabot/app/view/foo/bar.php] WAS found
+[DEBUG] Base_Controller::digestTemplate Not using Layout (layout_path has been set to null)
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Template [/www/aabot/app/view/foo/bar.php] WAS found
+[DEBUG] Logger Awake
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Template [/www/aabot/app/view/foo/bar.php] WAS found
+[DEBUG] Base_Controller::digestTemplate Using Layout [/www/aabot/app/view/layout/default.php]
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [controller_Foo]
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Template [/www/aabot/app/view/foo/bar.php] WAS found
+[DEBUG] Base_Controller::digestTemplate Using Layout [/www/aabot/app/view/layout/default.php]
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [controller_Foo]
+[DEBUG] Base_Controller::process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Template [/www/aabot/app/view/foo/bar.php] WAS found
+[DEBUG] Base_Controller::digestTemplate Using Layout [/www/aabot/app/view/layout/default.php]
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [controller_foo]
+[DEBUG] Base_Controller::process Calling process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Template [/www/aabot/app/view/foo/bar.php] WAS found
+[DEBUG] Base_Controller::digestTemplate Using Layout [/www/aabot/app/view/layout/default.php]
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action [bar]
+[DEBUG] Base_Controller::process Action Found [bar] now invoking
+[DEBUG] Base_Controller::process Template [/www/aabot/app/view/foo/bar.php] WAS found
+[DEBUG] Base_Controller::digestTemplate Using Layout [/www/aabot/app/view/layout/default.php]
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action [bar]
+[DEBUG] Base_Controller::process Action [bar] Found on Controller [controller_foo], now invoking
+[DEBUG] Base_Controller::process Template [/www/aabot/app/view/foo/bar.php] WAS found
+[DEBUG] Base_Controller::digestTemplate Using Layout [/www/aabot/app/view/layout/default.php]

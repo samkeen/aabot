@@ -25,6 +25,7 @@ class Bootstrapper {
 		$controller_file = $this->env->dir_app.'/Controller/'.$this->request_attributes['controller'].'.php';
 		if ($this->request_attributes['controller'] && file_exists($controller_file)) {
 			$controller_name = "controller_".$this->request_attributes['controller'];
+			$this->env->logger->debug(__METHOD__.' Invoking Controller [' . $controller_name . ']');
 			$controller = new $controller_name($this->env);
 			$controller->process($this->request_attributes['action']);
 		} else {
