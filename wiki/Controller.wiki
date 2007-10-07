@@ -8,12 +8,11 @@
 
 ==the process method==
 
-called as `process($action)`
+called as {{{public function process($action)}}}
 
-  * set the action for the controller
-  * determine if controller has $this->$action
-    * true
-    * false
+  # set the template based on the $action
+    * if $action is null look for default action (index.php)
+    * else look for file /app/views/{contoller}/{action}.php
 
 
  
