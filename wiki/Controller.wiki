@@ -2,7 +2,8 @@
 
 = Controller =
 
-* general controller
+== General Notes ==
+  * For a controller class of the name Controller_Foo, the name on the file system and used in code is Foo (Controller_ is dropped).
 
 
 
@@ -12,7 +13,7 @@ called as {{{public function process($action)}}}
 
   # set the template based on the $action
     * if $action is null look for default action (index.php)
-    * else look for file /app/views/{contoller}/{action}.php
+    * else look for file /app/view/{controller}/{action}.php
 
 
  
