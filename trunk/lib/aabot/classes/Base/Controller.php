@@ -2,8 +2,27 @@
 class Base_Controller {
 	protected $logger;
 	protected $env;
+	/**
+	 * this is the dir holding the template files for this action
+	 *
+	 * @var string
+	 */
+	protected $template_dir;
+	/**
+	 * this is the full path to the template file that maps
+	 * to this this contoller/action
+	 *
+	 * @var unknown_type
+	 */
 	protected $template_path;
 	protected $template_contents;
+	/**
+	 * The name of the controller as reflected on the file system
+	 * i.e The name for class Controller_Foo would be Foo
+	 *
+	 * @var string
+	 */
+	protected $name; 
 	/**
 	 * explicitly set the layout path to an empty string.  The
 	 * extending controller can then set it to null which signifies 
@@ -19,6 +38,8 @@ class Base_Controller {
 	public function __construct(Env $env) {
 		$this->env = $env;
 		$this->logger = $env->logger;
+		$this->name = str_ireplace('Controller_','',get_class($this));
+		$this->template_dir = $this->env->dir_view . '/' . $this->name . '/';
 		$this->p_ = new SimpleDTO();
 		$this->setLayout();
 	}
@@ -29,10 +50,10 @@ class Base_Controller {
 	 */
 	public function process($action) {
 		$this->logger->debug(__METHOD__.' Calling process for action [' . $action .']');
-		$this->action = $action;
+		$this->action = trim($action);
 		$this->setTemplate();
 		if($this->actionExists()) {
-			$this->logger->debug(__METHOD__.' Action [' . $action .'] Found on Controller [' . get_class($this) . '], now invoking');
+			$this->logger->debug(__METHOD__.' Action [' . $action .'] Found on Controller [' . $this->name . '], now invoking');
 			$this->$action();
 		} else {
 			$this->logger->info(__METHOD__.' Action NOT found [' . $action .']');
@@ -67,13 +88,17 @@ class Base_Controller {
 	 * Stores the path to the layout file.
 	 */
 	private function setLayout() {
-		$this->layout_path = file_exists($this->env->dir_layout . '/' . str_replace('Controller_','',get_class($this)) . '.php')
-			? $this->env->dir_layout . '/' . str_replace('Controller_','',get_class($this)) . '.php'
+		$this->layout_path = file_exists($this->env->dir_layout . '/' . $this->name . '.php')
+			? $this->env->dir_layout . '/' . $this->name . '.php'
 			: $this->env->dir_layout . '/default.php';
 	}
 	private function setTemplate() {
-		$this->template_path = file_exists($this->env->dir_view . '/' . str_replace('Controller_','',get_class($this)) . '/' . $this->action . '.php')
-			? $this->env->dir_view . '/' . str_replace('Controller_','',get_class($this)) . '/' . $this->action . '.php'
+		// look for default template file if the action is empty
+		if (empty($this->action) && !file_exists($this->template_dir.Config::DEFAULT_TEMPLATE)) {
+			$this->logger->error(__METHOD__." no action was supplied and no default template [".$this->template_dir.Config::DEFAULT_TEMPLATE."] was found");
+		}
+		$this->template_path = file_exists($this->template_dir . $this->action . '.php')
+			? $this->template_dir . $this->action . '.php'
 			: null;
 	}
 	/**

@@ -187,3 +187,70 @@
 [DEBUG] Logger Awake
 [DEBUG] Logger Awake
 [DEBUG] Logger Awake
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Base_Controller::setTemplate no action was supplied and no default template [/www/aabot/app/view/Foo/index.php] was found
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[ERROR] Base_Controller::setTemplate no action was supplied and no default template [/www/aabot/app/view/Foo/index.php] was found
+[INFO] Base_Controller::process Action NOT found []
+[ERROR] Base_Controller::process Template [] NOT found
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action []
+[ERROR] Base_Controller::setTemplate no action was supplied and no default template [/www/aabot/app/view/Foo/index.php] was found
+[INFO ] Base_Controller::process Action NOT found []
+[ERROR] Base_Controller::process Template [] NOT found
