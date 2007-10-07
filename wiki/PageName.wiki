@@ -5,21 +5,33 @@
 for the request `http://127.0.0.1/aabot/foo/bar` the expected app resources are:
 
 
+{{{
+app
+ \
+  controller
+   \
+    Foo.php
 
+view
+ \
+  foo
+  |\
+  | bar.php
+  |
+  \
+   layout
+    \
+     default.php
+}}}
 
-
-
+Where Foo.php would look like below with public method bar()
 
 {{{
 <?php
 class Controller_Foo extends Base_Controller {
 	
-	
 	public function bar() {
 		$this->p_->message = "Message From ".__METHOD__;
-		
-		$this->layout_path = null;
-
 	}
 }
 ?>
