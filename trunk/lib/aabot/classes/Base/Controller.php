@@ -14,7 +14,7 @@ class Base_Controller {
 	 *
 	 * @var unknown_type
 	 */
-	protected $template_path;
+	protected $template_file_path;
 	protected $template_contents;
 	/**
 	 * The name of the controller as reflected on the file system
@@ -66,7 +66,7 @@ class Base_Controller {
 		
 		//
 		if ($this->templateExists()) {
-			$this->logger->debug(__METHOD__.' Template ['.$this->template_path.'] WAS found');
+			$this->logger->debug(__METHOD__.' Template ['.$this->template_file_path.'] WAS found');
 			$this->renderView();
 		} else { // action method not found on controller and no template found
 			$this->logger->error(__METHOD__.' Template ['.$this->template_dir.$this->action.'] NOT found');
@@ -109,17 +109,22 @@ class Base_Controller {
 				$this->logger->info(__METHOD__." NO action was supplied and NO default action [".$this->template_dir.Config::DEFAULT_ACTION.".php] was found");
 				$this->action = null;
 			} else {
+				$this->logger->debug(__METHOD__." NO action was supplied but FOUND default action [".$this->template_dir.Config::DEFAULT_ACTION.".php].  Setting action to [".Config::DEFAULT_ACTION."]");
 				$this->action = $this->template_dir.Config::DEFAULT_ACTION;
 			}
 		} else {
-			$this->action = file_exists($this->template_dir . $action . '.php')
-				? $action
-				: null;
+			if (file_exists($this->template_dir . $action . '.php')) {
+				$this->action = $action;
+				$this->logger->debug(__METHOD__." action WAS supplied and template for that action WAS found [".$this->template_dir . $action.".php]");
+			} else {
+				$this->action = $action;
+				$this->logger->debug(__METHOD__." action WAS supplied but template for that action was NOT found [".$this->template_dir . $action.".php]");
+			}
 		}
 	}
 	private function callAction() {
+		$the_action = $this->action;
 		if($this->actionExists()) {
-			$the_action = $this->action;
 			$this->logger->debug(__METHOD__.' Action [' . $the_action .'] Found on Controller [' . $this->name . '], now invoking');
 			$this->$the_action();
 		} else {
@@ -131,7 +136,7 @@ class Base_Controller {
 	 * we leave this method with it set to null;
 	 */
 	private function setTemplate() {
-		$this->template_path = file_exists($this->template_dir . $this->action . '.php')
+		$this->template_file_path = file_exists($this->template_dir . $this->action . '.php')
 			? $this->template_dir . $this->action . '.php'
 			: null;
 	}
@@ -144,7 +149,7 @@ class Base_Controller {
 	private function digestTemplate() {
 		// set a short name ref to $this->p_ for ease of use in the view.
 		$p_ = $this->p_;
-		include($this->template_path);
+		include($this->template_file_path);
 		if ($this->usingLayout()) {
 			$this->logger->debug(__METHOD__.' Using Layout [' . $this->layout_path . ']');
 			/**
@@ -160,13 +165,13 @@ class Base_Controller {
 		}
 	}
 	private function actionExists() {
-		return $this->action !== null && method_exists($this,$this->action);
+		return method_exists($this,$this->action);
 	}
 	private function usingLayout() {
 		return $this->layout_path !== null;
 	}
 	private function templateExists() {
-		return $this->template_path !== null;
+		return $this->template_file_path !== null;
 	}
 	private function layoutExists() {
 		return file_exists($this->layout_path);
