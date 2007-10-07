@@ -55,29 +55,26 @@ class Base_Controller {
 		$this->setTemplate();
 		$this->setLayout();
 		$this->callAction();
-		/**
-		 * 
-		 */
-		// STOP flow if we are expecting a layout but it does NOT exist
-		if ($this->usingLayout() && ! $this->layoutExists()) {
-			$this->logger->error(__METHOD__.'(ln:'.__LINE__.') Using Layout ['.$this->layout_path.'] but does NOT exist');
-			die("Couldn't find the expected layout: ".$this->layout_path);
-		}
-		
-		//
-		if ($this->templateExists()) {
-			$this->logger->debug(__METHOD__.' Template ['.$this->template_file_path.'] WAS found');
-			$this->renderView();
-		} else { // action method not found on controller and no template found
-			$this->logger->error(__METHOD__.' Template ['.$this->template_dir.$this->action.'] NOT found');
-			die("Couldn't find the expected template: ".$this->template_dir.$this->action);
-		}
+		$this->renderView();
 	}
 	/**
 	 * Called from the implementing controller in order
 	 * to render the completed page.
 	 */
 	protected function renderView() {
+		/**
+		 * STOP flow if we are expecting a layout but it does NOT exist OR
+		 * template for action doesnot exist
+		 */
+		if ($this->usingLayout() && ! $this->layoutExists()) {
+			$this->logger->error(__METHOD__.'(ln:'.__LINE__.') Using Layout ['.$this->layout_path.'] but does NOT exist');
+			die("Couldn't find the expected layout: ".$this->layout_path);
+		}
+		if ( ! $this->templateExists()) {
+			$this->logger->error(__METHOD__.' Template ['.$this->template_dir.$this->action.'] NOT found');
+			die("Couldn't find the expected template: ".$this->template_dir.$this->action);
+		}
+		$this->logger->debug(__METHOD__.' Template ['.$this->template_file_path.'] WAS found');
 		$this->digestTemplate();
 		if ($this->usingLayout()) {
 			// set a short name ref to $this->p_ for ease of use in the view.
