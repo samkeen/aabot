@@ -9,7 +9,7 @@ class Env {
 	public function __construct($context_path=null) {
 		$this->base_path = $context_path;
 		$this->base_attributes['base_path'] = $context_path;
-		$this->base_attributes['default_home'] = '/static/index.php';
+		$this->base_attributes['default_home'] = 'static/index.php';
 		$this->base_attributes['dir_app'] = '/app';
 		$this->base_attributes['dir_layout'] = '/app/view/layout';
 		$this->base_attributes['dir_view'] = '/app/view';
@@ -23,8 +23,6 @@ class Env {
 			return null;
 		}
 	}
-
-	
 }
 
 ?>

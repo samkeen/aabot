@@ -20,7 +20,7 @@ class Bootstrapper {
 		/*
 		 * if there was a controller in the request and an accompanying 
 		 * controller file exixts, intanciate it and call it's process
-		 *
+		 * method
 		 */
 		$controller_file = $this->env->dir_app.'/Controller/'.$this->request_attributes['controller'].'.php';
 		if ($this->request_attributes['controller'] && file_exists($controller_file)) {
