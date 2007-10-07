@@ -24,3 +24,36 @@ class Controller_Foo extends Base_Controller {
 }
 ?>
 }}}
+
+
+
+==Not using a Layout==
+{{{
+/**
+  * we can optionally set the layout to null.  This signals to the
+  * Controller that we are not using a contoller
+  */
+  $this->layout_path = null;
+}}}
+
+So if you normally get:
+
+{{{
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>boo</title>
+</head>
+<body>
+<h1>Hello, Message From Controller_Foo::bar</h1>
+</body>
+</html>
+}}}
+
+with layout set to null you would get:
+
+{{{
+<h1>Hello, Message From Controller_Foo::bar</h1>
+}}}
