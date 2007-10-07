@@ -4,22 +4,19 @@ class Base_Controller {
 	protected $env;
 	/**
 	 * this is the dir holding the template files for this action
-	 *
 	 * @var string
 	 */
 	protected $template_dir;
 	/**
 	 * this is the full path to the template file that maps
 	 * to this this contoller/action
-	 *
 	 * @var unknown_type
 	 */
 	protected $template_file_path;
-	protected $template_contents;
+	protected $rendered_template;
 	/**
 	 * The name of the controller as reflected on the file system
 	 * i.e The name for class Controller_Foo would be Foo
-	 *
 	 * @var string
 	 */
 	protected $name; 
@@ -27,7 +24,6 @@ class Base_Controller {
 	 * explicitly set the layout path to an empty string.  The
 	 * extending controller can then set it to null which signifies 
 	 * the no layout is to be used.
-	 *
 	 * @var string
 	 */
 	protected $layout_path = "";
@@ -85,10 +81,9 @@ class Base_Controller {
 	}
 	/**
 	 * output payload without a template.
-	 *
 	 */
 	protected function directOutput() {
-		
+		die("To Be Implemented");
 	}
 	/**
 	 * Stores the path to the layout file.
@@ -139,7 +134,7 @@ class Base_Controller {
 	}
 	/**
 	 * Stores the rendered contents of the template in 
-	 * $template_contents to to be included in the layout
+	 * $rendered_template to to be included in the layout
 	 * (or rendeded on its own if no template) 
 	 *
 	 */
@@ -155,10 +150,10 @@ class Base_Controller {
 			 * surrounding layout. (ex. define a stylesheet of js import)
 			 */
 			$this->p_ = $p_;
-			$this->template_contents = ob_get_contents();
+			$this->rendered_template = ob_get_contents();
 			ob_end_clean();
 		} else {
-			$this->logger->debug(__METHOD__.' Not using Layout (layout_path has been set to null)');
+			$this->logger->debug(__METHOD__.' Not using Layout (layout_path was found to be [null])');
 		}
 	}
 	private function actionExists() {

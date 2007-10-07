@@ -9,7 +9,7 @@ class Controller_Foo extends Base_Controller {
 		 * we can optionally set the layout to null.  This signals to the
 		 * Controller that we are not using a contoller
 		 */
-		$this->layout_path = null;
+		//$this->layout_path = null;
 
 	}
 }

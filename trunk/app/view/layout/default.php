@@ -6,6 +6,6 @@
 	<title><?php echo ($p_->title); ?></title>
 </head>
 <body>
-<?php echo $this->template_contents; ?>
+<?php echo $this->rendered_template; ?>
 </body>
 </html>

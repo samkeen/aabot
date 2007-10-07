@@ -394,3 +394,23 @@
 [DEBUG] Base_Controller::setAction action WAS supplied but template for that action was NOT found [/www/aabot/app/view/Foo/barx.php]
 [INFO ] Base_Controller::callAction Action NOT found [barx]
 [ERROR] Base_Controller::process Template [/www/aabot/app/view/Foo/barx] NOT found
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action [barx]
+[DEBUG] Base_Controller::setAction action WAS supplied but template for that action was NOT found [/www/aabot/app/view/Foo/barx.php]
+[INFO ] Base_Controller::callAction Action NOT found [barx]
+[ERROR] Base_Controller::renderView Template [/www/aabot/app/view/Foo/barx] NOT found
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action [bar]
+[DEBUG] Base_Controller::setAction action WAS supplied and template for that action WAS found [/www/aabot/app/view/Foo/bar.php]
+[DEBUG] Base_Controller::callAction Action [bar] Found on Controller [Foo], now invoking
+[DEBUG] Base_Controller::renderView Template [/www/aabot/app/view/Foo/bar.php] WAS found
+[DEBUG] Base_Controller::digestTemplate Not using Layout (layout_path has been set to null)
+[DEBUG] Logger Awake
+[DEBUG] Bootstrapper::strap Invoking Controller [Controller_Foo]
+[DEBUG] Base_Controller::process Calling process for action [bar]
+[DEBUG] Base_Controller::setAction action WAS supplied and template for that action WAS found [/www/aabot/app/view/Foo/bar.php]
+[DEBUG] Base_Controller::callAction Action [bar] Found on Controller [Foo], now invoking
+[DEBUG] Base_Controller::renderView Template [/www/aabot/app/view/Foo/bar.php] WAS found
+[DEBUG] Base_Controller::digestTemplate Using Layout [/www/aabot/app/view/layout/default.php]
