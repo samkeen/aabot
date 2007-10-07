@@ -35,9 +35,11 @@ class Bootstrapper {
 		
 	}
 	private function setControllerAndAction() {
-		$elements = explode('/',$_GET['aa'],2);
-		$this->request_attributes['controller'] = count($elements) ? ucfirst($elements[0]) : null;
-		$this->request_attributes['action'] = count($elements)>1 ? $elements[1] : null;
+		if (isset($_GET['aa'])) {
+			$elements = explode('/',$_GET['aa'],2);
+			$this->request_attributes['controller'] = count($elements) ? ucfirst($elements[0]) : null;
+			$this->request_attributes['action'] = count($elements)>1 ? $elements[1] : null;
+		}
 	}
 }
 ?>
