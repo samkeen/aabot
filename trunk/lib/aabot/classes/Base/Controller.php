@@ -67,7 +67,7 @@ class Base_Controller {
 			die("Couldn't find the expected layout: ".$this->layout_path);
 		}
 		if ( ! $this->templateExists()) {
-			$this->logger->error(__METHOD__.' Template ['.$this->template_dir.$this->action.'] NOT found');
+			$this->logger->error(__METHOD__.'(ln:'.__LINE__.') Template ['.$this->template_dir.$this->action.'] NOT found');
 			die("Couldn't find the expected template: ".$this->template_dir.$this->action);
 		}
 		$this->logger->debug(__METHOD__.' Template ['.$this->template_file_path.'] WAS found');
