@@ -1,13 +1,13 @@
 <?php
 final class CONSTS {
 	// You will need to edit these 2 for your particular environment
-	const BASE_APP_PATH = '/Library/WebServer/Documents/aabot/move-me-to-webroot';
+	const BASE_APP_PATH = '/Library/WebServer/Documents/aabot/move-me-to-webroot/app';
 	const BASE_LIB_PATH = '/Library/WebServer/Documents/aabot/lib';
 	
 	
-	private static $APP_DIR = '/app';
-	private static $LAYOUT_DIR = '/app/View/layout';
-	private static $TEMPLATE_DIR = '/app/View/templates';
+	private static $APP_DIR = '/';
+	private static $LAYOUT_DIR = '/View/layout';
+	private static $TEMPLATE_DIR = '/View/templates';
 	
 	private static $LIB_LAYOUT_DIR = '/View/layout';
 	private static $LIB_TEMPLATE_DIR = '/View/templates';
