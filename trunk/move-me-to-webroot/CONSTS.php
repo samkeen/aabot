@@ -1,8 +1,10 @@
 <?php
 final class CONSTS {
-	// paths that can be requested
-	public static $BASE_APP_PATH = '/Library/WebServer/Documents/aabot/move-me-to-webroot';
-	public static $BASE_LIB_PATH = '/Library/WebServer/Documents/aabot/lib';
+	// You will need to edit these 2 for your particular environment
+	const BASE_APP_PATH = '/Library/WebServer/Documents/aabot/move-me-to-webroot';
+	const BASE_LIB_PATH = '/Library/WebServer/Documents/aabot/lib';
+	
+	
 	private static $APP_DIR = '/app';
 	private static $LAYOUT_DIR = '/app/View/layout';
 	private static $TEMPLATE_DIR = '/app/View/templates';
@@ -22,9 +24,9 @@ final class CONSTS {
 	
 	static final function PATH($path, $append=null) {
 		if(substr($path,0,4)=='LIB_') {
-			return self::$BASE_LIB_PATH.self::$$path.$append;
+			return self::BASE_LIB_PATH.self::$$path.$append;
 		} else {
-			return self::$BASE_APP_PATH.self::$$path.$append;
+			return self::BASE_APP_PATH.self::$$path.$append;
 		}
 		
 	}
