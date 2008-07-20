@@ -197,9 +197,12 @@ abstract class Controller_Base {
 				break;
 			}
 		}
-		if ( ! $deepest_template_file_path && file_exists(CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php')) {
-			$this->logger->debug(__METHOD__.' Found deepest template file match: '.CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php');
-			$deepest_template_file_path = CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php';
+		if ( ! $deepest_template_file_path) {
+			$this->logger->debug(__METHOD__.' trying template match for: '.CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php');
+			if (file_exists(CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php')) {
+				$this->logger->debug(__METHOD__.' Found deepest template file match: '.CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php');
+				$deepest_template_file_path = CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php';
+			}
 		}
 		return $deepest_template_file_path;
 	}
