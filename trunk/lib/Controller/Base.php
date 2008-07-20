@@ -190,6 +190,7 @@ abstract class Controller_Base {
 		$template_path = CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'/';
 		for($index=count($this->request_segments);$index>=1;$index--) {
 			$possible_template_file = $template_path.implode('/',array_slice($this->request_segments,0,$index)).".php";
+			$this->logger->debug(__METHOD__.' trying template match for: '.$possible_template_file);
 			if (file_exists($possible_template_file)) {
 				$this->logger->debug(__METHOD__.' Found deepest template file match: '.$possible_template_file);
 				$deepest_template_file_path = $possible_template_file;
