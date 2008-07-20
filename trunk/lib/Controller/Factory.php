@@ -24,7 +24,7 @@ class Controller_Factory {
 			$controller = new $controller_name($request_context);
 		} else {
 			$logger->error(__METHOD__.'  controller file requested ['.$controller_file.'] does not exist');
-			Util_Http::send_to_unknown_request($request_context);
+			Util_Core::send_to_unknown_request($request_context);
 		}
 		return $controller;
 	}

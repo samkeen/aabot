@@ -112,7 +112,7 @@ abstract class Controller_Base {
 		$payload = $this->payload;
 		if ( ! file_exists($this->template_file)) {
 			$this->logger->notice(__METHOD__.' requested template file not found, sending to file not found');
-			Util_Http::send_to_unknown_request($this->request_context);
+			Util_Core::send_to_unknown_request($this->request_context);
 		}
 		ob_start();
 		include($this->template_file);
@@ -150,7 +150,7 @@ abstract class Controller_Base {
 					if (isset($this->request_segments[0])) {
 						$this->logger->debug(__METHOD__.'  Did not find requested Action['.str_replace('-','_',$this->request_segments[0])
 							.'_action] Sending to File not found');
-						Util_Http::send_to_unknown_request($this->request_context);	
+						Util_Core::send_to_unknown_request($this->request_context);	
 					} else {
 						$this->requested_action = CONSTS::DEFAULT_ACTION.'_action';
 						$this->logger->debug(__METHOD__.' No action supplied, using default action ['.CONSTS::DEFAULT_ACTION.'_action]');

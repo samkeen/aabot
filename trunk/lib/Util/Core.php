@@ -1,5 +1,5 @@
 <?php
-class Util_Http {
+class Util_Core {
 	
 	
 	public static function send_to_unknown_request($request_context) {
