@@ -163,17 +163,6 @@ abstract class Controller_Base {
 		// if the template has not been set, set it here.  this allows the controller to set it.
 		if($this->template_file === null) {
 			$this->template_file = $this->detemine_deepest_template_match();
-//			$action_name = str_replace('_action','',$this->requested_action);
-//			$template_file_for_action = CONSTS::PATH('TEMPLATE_DIR','/') . $this->name .'/'. $action_name . '.php';
-//			if (file_exists($template_file_for_action)) {
-//				$this->template_file = $template_file_for_action;
-//				$this->logger->debug(__METHOD__.'  found template file for the requested action: '.$template_file_for_action);
-//			} else {
-//				$default_template_file = CONSTS::PATH('TEMPLATE_DIR','/') . CONSTS::DEFAULT_TEMPLATE . '.php';
-//				$this->template_file = $default_template_file;
-//				$this->logger->debug(__METHOD__.'  unable to find template file for the requested action ['
-//					.$template_file_for_action. '] Instead sending to "file not found Action');
-//			}
 		}
 		
 	}
@@ -188,6 +177,7 @@ abstract class Controller_Base {
 	private function detemine_deepest_template_match() {
 		$deepest_template_file_path = null;
 		$template_path = CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'/';
+		// look for template starting with all request segments and then working down
 		for($index=count($this->request_segments);$index>=1;$index--) {
 			$possible_template_file = $template_path.implode('/',array_slice($this->request_segments,0,$index)).".php";
 			$this->logger->debug(__METHOD__.' trying template match for: '.$possible_template_file);
@@ -197,11 +187,20 @@ abstract class Controller_Base {
 				break;
 			}
 		}
+		// look for a template for the action
 		if ( ! $deepest_template_file_path) {
 			$this->logger->debug(__METHOD__.' trying template match for: '.CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php');
 			if (file_exists(CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php')) {
 				$this->logger->debug(__METHOD__.' Found deepest template file match: '.CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php');
 				$deepest_template_file_path = CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'/'.str_replace('_action','',$this->requested_action).'.php';
+			}
+		}
+		// finally look for a template for the contoller
+		if ( ! $deepest_template_file_path) {
+			$this->logger->debug(__METHOD__.' trying template match for: '.CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'.php');
+			if (file_exists(CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'.php')) {
+				$this->logger->debug(__METHOD__.' Found deepest template file match: '.CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'.php');
+				$deepest_template_file_path = CONSTS::PATH('TEMPLATE_DIR','/').$this->name.'.php';
 			}
 		}
 		return $deepest_template_file_path;
