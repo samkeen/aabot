@@ -111,7 +111,7 @@ abstract class Controller_Base {
 		// set a short name ref to $this->payload for ease of use in the view.
 		$payload = $this->payload;
 		if ( ! file_exists($this->template_file)) {
-			$this->logger->notice(__METHOD__.' requested template file not found, sending to file not found');
+			$this->logger->notice(__METHOD__.' requested template file not found ['.$this->template_file.'], sending to file not found');
 			Util_Core::send_to_unknown_request($this->request_context);
 		}
 		ob_start();
