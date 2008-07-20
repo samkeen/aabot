@@ -6,10 +6,10 @@
  * @author "Sam Keen" <sam@pageindigo.com>
  */
 function __autoload($class) {
-	if(file_exists("app/" . str_replace('_', '/', $class) . '.php')) {
-		require "app/" . str_replace('_', '/', $class) . '.php';
+	if(file_exists(CONSTS::$BASE_APP_PATH.'/' . str_replace('_', '/', $class) . '.php')) {
+		require CONSTS::$BASE_APP_PATH.'/' . str_replace('_', '/', $class) . '.php';
 	} else {
-		require "lib/" . str_replace('_', '/', $class) . '.php';
+		require CONSTS::$BASE_LIB_PATH.'/' . str_replace('_', '/', $class) . '.php';
 	}
 }
 /**
