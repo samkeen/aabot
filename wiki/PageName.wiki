@@ -43,7 +43,7 @@ and bar.php would look something like this
 <?php $payload->title = 'boo'; ?>
 <h1>Hello, <?php echo ($payload->->message); ?></h1>
 }}}
-_Note you can assign valus in $payload to be rendered in the surrounding layout (i.e. $payload->title = 'boo';)_
+_Note you can assign values in a template to `$payload` to be rendered in the surrounding layout (i.e. `$payload->title = 'boo';`)_
 
 and default.php would look something like this:
 
