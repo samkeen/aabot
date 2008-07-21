@@ -39,7 +39,7 @@ abstract class Controller_Base {
 	public function __construct(array $request_context, $queued_action=null, $relative_template_path=null) {
 		global $logger;
 		$this->logger = $logger;
-		$this->logger->debug(print_r($this,1));
+		
 		
 		$this->request_context = $request_context;
 		$this->queued_action = $queued_action;
@@ -51,6 +51,8 @@ abstract class Controller_Base {
 		$this->request_method = $request_context['request_method'];
 		$this->name = strtolower(str_ireplace('controller_','',get_class($this)));
 		$this->payload = new SimpleDTO();
+		
+		$this->logger->debug(print_r($this,1));
 		
 	}
 	/**
