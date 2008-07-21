@@ -31,7 +31,7 @@ Where Foo.php would look like below with public method bar()
 class Controller_Foo extends Base_Controller {
 	
 	public function bar() {
-		$this->p_->message = "Message From ".__METHOD__;
+		$this->$payload->->message = "Message From ".__METHOD__;
 	}
 }
 ?>
@@ -40,8 +40,8 @@ class Controller_Foo extends Base_Controller {
 and bar.php would look something like this
 
 {{{
-<?php $p_->title = 'boo'; ?>
-<h1>Hello, <?php echo ($p_->message); ?></h1>
+<?php $payload->title = 'boo'; ?>
+<h1>Hello, <?php echo ($payload->->message); ?></h1>
 }}}
 
 and default.php would look something like this:
