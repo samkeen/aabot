@@ -2,9 +2,16 @@
 
 class Controller_Factory {
 	
-	public static function get_instance() {
+	public static function get_instance($custom_routes) {
 		global $logger;
-		$request_context = get_context(array_notempty_else($_GET,'c'));
+		$url_context_param = null;
+		if ($custom_route = self::custom_route($custom_routes)) {
+			$url_context_param = $custom_route;
+		} else {
+			$url_context_param = array_notempty_else($_GET,'c');
+		}
+		
+		$request_context = get_context($url_context_param);
 		// if there is at least one request segment, set the first as the requested
 		// controller name and remove it from the request segments.
 		$requested_controller = isset($request_context['request_segments'][0])
@@ -16,7 +23,7 @@ class Controller_Factory {
 		 * method
 		 */
 		$controller = null;
-		$controller_file = CONSTS::PATH('APP_DIR','/Controller/').$requested_controller.'.php';
+		$controller_file = CONSTS::PATH('APP_DIR','Controller/').$requested_controller.'.php';
 		$logger->debug(__METHOD__.'  File for requested Controller is: '.$controller_file);
 		if (file_exists($controller_file)) {
 			$controller_name = "Controller_".$requested_controller;
@@ -28,6 +35,8 @@ class Controller_Factory {
 		}
 		return $controller;
 	}
+	private static function custom_route($custom_routes) {
+		$requested_route = $_SERVER['REQUEST_URI'];
+		return isset($custom_routes[$requested_route]) ? $custom_routes[$requested_route] : false;
+	}
 }
-
-?>

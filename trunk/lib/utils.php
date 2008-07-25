@@ -42,10 +42,9 @@ function array_get_else(array $array, $key, $val_if_not_found=null) {
 }
 function get_context($request_url_context) {
 	global $logger;
-	$request_url_context = rtrim($request_url_context,'/ ');
+	$request_url_context = trim($request_url_context,'/ ');
 	$context = array();
 	$requested_response_type = CONSTS::DEFAULT_REQUESTED_RESPONSE_TYPE;
-	$request_url_context = trim($request_url_context);
 	if (! empty($request_url_context) ) {
 		if(strstr($request_url_context,'/')) {
 			$context = explode('/',$request_url_context);
