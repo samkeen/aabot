@@ -213,9 +213,13 @@ abstract class Controller_Base {
 	private function set_layout() {
 		$layout_dir = CONSTS::PATH('LAYOUT_DIR','/');
 		$lib_layout_dir = CONSTS::PATH('LIB_LAYOUT_DIR','/');
-		$this->layout_file = file_exists($layout_dir . $this->name . '.php')
-			? $layout_dir . $this->name . '.php'
-			: $lib_layout_dir . CONSTS::DEFAULT_LAYOUT.'.php';
+		if (file_exists($layout_dir . $this->name . '.php')) {
+			$this->layout_file = $layout_dir . $this->name . '.php';
+		} else {
+			$this->layout_file = file_exists($layout_dir . CONSTS::DEFAULT_LAYOUT . '.php')
+				? $layout_dir . CONSTS::DEFAULT_LAYOUT . '.php'
+				: $lib_layout_dir . CONSTS::DEFAULT_LAYOUT.'.php';
+		}
 	}
 	private function using_layout() {
 		return $this->layout_file !== null;
