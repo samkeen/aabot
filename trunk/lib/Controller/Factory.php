@@ -2,11 +2,13 @@
 
 class Controller_Factory {
 	
-	public static function get_instance($custom_routes) {
+	public static function get_instance($custom_routes=null) {
 		global $logger;
 		$url_context_param = null;
-		if ($custom_route = self::custom_route($custom_routes)) {
-			$url_context_param = $custom_route;
+		if($custom_routes) {
+			if ($custom_route = self::custom_route($custom_routes)) {
+				$url_context_param = $custom_route;
+			}
 		} else {
 			$url_context_param = array_notempty_else($_GET,'c');
 		}
