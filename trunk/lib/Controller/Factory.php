@@ -2,18 +2,17 @@
 
 class Controller_Factory {
 	
-	public static function get_instance($custom_routes=null) {
-		global $logger;
-		$url_context_param = null;
-		if($custom_routes) {
-			if ($custom_route = self::custom_route($custom_routes)) {
-				$url_context_param = $custom_route;
-			}
-		} else {
-			$url_context_param = array_notempty_else($_GET,'c');
-		}
-		
-		$request_context = get_context($url_context_param);
+        public static function get_instance($custom_routes=null) {
+                global $logger;
+                $url_context_param = null;
+               $logger->debug(__METHOD__.' $_GET: '.print_r($_GET,1));
+                if($custom_routes && $custom_route = self::custom_route($custom_routes)) {
+                       $url_context_param = $custom_route;
+                } else {
+                        $url_context_param = array_notempty_else($_GET,'c');
+                }
+               $logger->debug(__METHOD__.' $url_context_param:'.print_r($url_context_param,1));
+                $request_context = get_context($url_context_param);
 		// if there is at least one request segment, set the first as the requested
 		// controller name and remove it from the request segments.
 		$requested_controller = isset($request_context['request_segments'][0])
