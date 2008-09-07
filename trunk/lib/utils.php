@@ -37,7 +37,10 @@ function array_notempty_else(array $array, $key, $val_if_not_found=null) {
  * @param mixed $val_if_not_found [default is NULL]
  * @return mixed Value at $array[$key] if exists, else $val_if_not_found
  */
-function array_get_else(array $array, $key, $val_if_not_found=null) {
+function array_get_else($array, $key, $val_if_not_found=null) {
+	if ($array===NULL) {
+		return $val_if_not_found;
+	}
 	return isset($array[$key])?$array[$key]:$val_if_not_found;
 }
 function get_context($request_url_context) {
