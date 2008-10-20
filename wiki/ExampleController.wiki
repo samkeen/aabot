@@ -6,36 +6,54 @@
 = Example Controller =
 
 {{{
-<?php
-class Controller_Sms extends Controller_Base {
+class Controller_Example extends Controller_Base {
 	
-	protected function default_action() {
-		$this->payload->message = "Hello, this is the SMS controller";
-		$this->payload->controller = print_r($this,1);
+	protected function init() {
+		// set the layout for all the actions
+//		$this->set_layout();
+		// negate the use of a layout for this controller
+//		$this->use_layout = false;
+		// set the template for all the actions
+//		$this->set_template();
+		// negate the use of templates for this controller
 	}
 	
-//	$this->sms_service = Weave::instance()->sms['service_name'];
-	
+	protected function default_action() {
+		// set the layout for this action
+//		$this->set_layout();
+		// negate the use of a layout for this action
+//		$this->use_layout = false;
+		// set the template for this action
+//		$this->set_template();
+		// negate the use of templates for this action
+//		$this->use_template = false;
+		$this->payload->message = "This is the action you get (".__FUNCTION__.") if no action is called";
+	}
+	protected function viewless_action() {
+		// set the layout for this action
+//		$this->set_layout();
+		// negate the use of a layout for this action
+		$this->use_layout = false;
+		// set the template for this action
+//		$this->set_template();
+		// negate the use of templates for this action
+		$this->use_template = false;
+		$this->logger->debug("Made it to the viewless action of the Example contoller");
+	}
 	/**
-	 * handler for inbound SMS requests
-	 *
-	 * @param array $request
+	 * /example/no_layout OR /example/no-layout
 	 */
-//	public function receiver(array $request = null) {
-//		header('Content-type: text/plain',true);
-//		$this->sms_logger->debug(__METHOD__.' $request:> '.print_r($request, 1));	
-//		$sms_helper = new Helper_SMS($this->sms_logger);
-//		if ($sms_helper->gather_conversation_components_for($this->sms_service,array_map('urldecode',$_REQUEST)) 
-//			&& $user = $sms_helper->authenticate_request(Weave::instance()->sms['service_name'])) {
-//
-//		$sms_helper->parse_statement($user);
-//			if($sms_helper->has_feedback()) {
-//				echo $sms_helper->gather_feedback();
-//			}
-//		} else {
-//			$this->sms_logger->info(__METHOD__.' Required components were not found and/or authentcation failed for this request');
-//		}
-//		die;
-//	}
+	protected function no_layout_action() {
+		// set the layout for this action
+//		$this->set_layout();
+		// negate the use of a layout for this action
+		$this->use_layout = false;
+		// set the template for this action
+//		$this->set_template();
+		// negate the use of templates for this action
+//		$this->use_template = false;
+		$this->payload->message = "<p>This action (".__FUNCTION__.") does not use a layout<p><p>It can be called by .../example/no_layout OR .../example/no-layout</p>";
+	}
+	
 }
 }}}
