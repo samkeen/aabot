@@ -1,0 +1,117 @@
+; Channels are defined here
+; Comments start with ';', as in php.ini
+[channel_type_map]
+x2http=xmpp
+textmarks=sms
+zeep=sms
+
+[sms]
+default_channel = "zeep"
+
+[sms/zeep]
+channel_name = "zeep"
+channel_short_code = "88147"
+api_key = "my zeep api key"
+keyword[] = "my zeep keyword"
+keyword[] = "my second zeep keyword"
+keyword_dev = ""
+signature_key = "secret key"
+api_uri = "https://api.zeepmobile.com/messaging/2008-07-14/send_message"
+api_uri_port="80"
+api_username="my zeep username"
+api_password=null
+event_account_update = "SUBSCRIPTION_UPDATE"
+
+[sms/textmarks]
+channel_name = "textmarks"
+channel_short_code = "41411"
+api_key = "my textsmarks api key"
+keyword[] = "my textmarks keyword"
+keyword[] = "my second textmarks keyword"
+signature_key = "my secret textmarks signing key"
+api_uri = "textmarks api uri"
+api_uri_port="80"
+api_username="my textmarks username"
+api_password="my text marks password"
+event_account_update = "SUBSCRIPTION_UPDATE"
+
+;; generalized conversation components we recieve from the SMS services.  (we get to these key names using the glossaries below)
+[sms/channel_fields]
+text=null
+channel_keyword=null
+channel_short_code=null
+conversation_timestamp=null
+communicaid_type=null
+security_signature=null
+channel_user_id=null
+channel_user_number=null
+
+;; convert a particular service request keynames to our generalized ones (sms_conversation_fields)
+;; FORMAT: {their term} = "{our term}"
+
+[sms/channel_fields/zeep]
+text="body"
+channel_keyword="sms_prefix"
+channel_short_code="short_code"
+conversation_timestamp=null
+communicaid_type=event
+security_signature=null
+channel_user_id="uid"
+channel_user_number="min"
+
+required_fields="text, channel_keyword, channel_user_id, channel_user_number, communicaid_type, channel_short_code"
+
+[sms/channel_fields/textmarks]
+;; private $textmarks_conversation_glossary = array('txt'=>'text','kw'=>'service_keyword','ts'=>'conversation_timestamp','sig'=>'security_signature','uid'=>'channel_user_id','event' => 'event');
+text=null
+channel_keyword=null
+channel_short_code="short_code"
+conversation_timestamp=null
+communicaid_type=null
+security_signature=null
+channel_user_id=null
+channel_user_number=null
+
+[xmpp]
+
+[xmpp/x2http]
+channel_name = "x2http"
+channel_short_code = null
+api_key = null
+keyword[] = "x2http"
+keyword_dev = null
+signature_key = null
+api_host_name="extapi.com"
+api_domain_name="extapi.com"
+api_uri_scheme="http"
+api_uri_port="5222"
+api_uri = "uri to jabber server"
+api_username="jabber account username"
+api_password="jabber account password"
+event_account_update = null
+
+[xmpp/channel_fields/x2http]
+text="message"
+channel_keyword=null
+channel_short_code="id"
+conversation_timestamp=null
+communicaid_type="type"
+security_signature=null
+channel_user_id="from"
+channel_user_number=null
+required_fields="text, channel_user_id"
+
+
+[xmpp/channel_fields]
+from=null
+from_resource=null
+to=null
+resource=null
+message=null
+id=null
+subject=null
+thread=null
+type=null
+
+
+
