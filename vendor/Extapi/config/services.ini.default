@@ -1,0 +1,11 @@
+;; Services and their accompaning shortcodes, etc
+
+[tmet]
+name="tmet"
+api_key="tmet api key"
+api_uri="http://developer.trimet.org/ws/V1"
+
+[twitter]
+name="twitter"
+api_key="twitter api key"
+api_uri="twitter api uri"
