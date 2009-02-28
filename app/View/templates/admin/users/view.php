@@ -12,4 +12,4 @@
 <?php }
 } ?>
 </dl>
-<a href="/admin/users">All Users</a>
+<a href="/users.admin">All Users</a>

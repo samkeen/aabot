@@ -15,7 +15,8 @@ class View_Form {
 		$this->form_action = $action != null ? strtolower($action) : $this->controller->action;
 		$this->model_name = strtolower($model_name);
 		$this->model_id_name = $this->model_name.'_id';
-        $relative_action_url = ltrim(implode('/',array($this->controller->context,$this->controller->name,$this->controller->action)),'/');
+        $controller_context = $this->controller->controller_context?".{$this->controller->controller_context}":"";
+        $relative_action_url = ltrim(implode('/',array($this->controller->name.$controller_context,$this->controller->action)),'/');
 		// <form action="/channels/add" method="post" accept-charset="utf8">
 		echo '<form action="/'.$relative_action_url.'" method="post" accept-charset="utf8">'."\n";
 	}
@@ -32,15 +33,23 @@ class View_Form {
 		echo $form_close;
 	}
 	
-	public function text($input_name) {
+	public function text($input_name, $options=array()) {
 		//  value="$this->form_get('name')"
 		$names = $this->model_field_names($input_name);
-		$value = $this->form_action=='edit' ? ' value="'.$this->form_get($names['field']).'" ' : '';
-		// <p><label for="channel-name">Name:</label><input id="channel-name" name="channel[name]" type="text" ></p>
-		echo '<p><label for="'.$names['model'].'-'.$names['field'].'">'.$this->labelize_name($names['field']).'</label>'
-			.'<input id="'.$names['model'].'-'.$names['field'].'" name="'.$names['model'].'['.$names['field'].']" type="text"'
-			.$value
-			." ></p>\n";
+		$value = $this->form_action=='edit' ? $this->form_get($names['field']) : '';
+        if(in_array('textarea', $options)) {
+            // <p><label for="channel-name">Name:</label><input id="channel-name" name="channel[name]" type="text" ></p>
+            echo '<p><label for="'.$names['model'].'-'.$names['field'].'">'.$this->labelize_name($names['field']).'</label>'
+                .'<textarea id="'.$names['model'].'-'.$names['field'].'" name="'.$names['model'].'['.$names['field'].']" '
+                ." >{$value}</textarea></p>\n";
+        } else {
+            // <p><label for="channel-name">Name:</label><input id="channel-name" name="channel[name]" type="text" ></p>
+            echo '<p><label for="'.$names['model'].'-'.$names['field'].'">'.$this->labelize_name($names['field']).'</label>'
+                .'<input id="'.$names['model'].'-'.$names['field'].'" name="'.$names['model'].'['.$names['field'].']" type="text"'
+                .'value="'.$value.'" '
+                ." ></p>\n";
+        }
+		
 	}
     /**
      *

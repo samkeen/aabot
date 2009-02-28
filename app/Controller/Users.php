@@ -28,7 +28,7 @@ class Controller_Users extends Controller_Base {
 			$user = new Model_User();
 			if ($user->save($this->form_data)) {
 				$this->feedback = "The User has been created";
-				$this->redirect('/admin/users');
+				$this->redirect('/users.admin');
 			} else {
 				$this->feedback = "There was a problem creating the user";
 			}
@@ -39,7 +39,7 @@ class Controller_Users extends Controller_Base {
 			$user = new Model_User();
 			if ($user->save($this->form_data)) {
 				$this->feedback = "The User has been updated";
-				$this->redirect('/admin/users');
+				$this->redirect('/users.admin');
 			} else {
 				$this->feedback = "There was a problem creating your account";
 			}
@@ -53,7 +53,7 @@ class Controller_Users extends Controller_Base {
 		$user->set('user_id',$this->arguments__first);
 		if ($user->delete()) {
 			$this->feedback = "The User has been deleted";
-			$this->redirect('/admin/users');
+			$this->redirect('/users.admin');
 		} else {
 			$this->feedback = "There was a problem deleting this user";
 		}

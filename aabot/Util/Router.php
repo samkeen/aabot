@@ -4,41 +4,10 @@
  * 
  * example request URI
  * 
- * http://example.com/admin/users/edit/42
+ * http://example.com/users.admin/edit/42
  * 
  * first goal of Router is to determine the Controller in the above example.  First the 
- * request portion (/admin/users/edit/42) is tokenized: array('admin','users','edit','42')
- * Then the immediate gaol is to determine which token refers to the Controller.  This is done 
- * by reconsiling the tokens with the Controller directory filesystem
- * 
- * i.e. for the above request, with the belore file structure, 'users' is determined
- * to be the controller. admin is excluded as it is a folder and not a file.  Users is chooses as
- * it is the first Filename to URL Token match (we stop looking after first match) 
- * Controller
- *		  	\admin
- * 				\Users.php
- * 
- * We end up with
- * $pre_controller_tokens = array(
- * 		'0' => array(
- * 			'name' => 'admin',
- * 			'sub_designation' => ''
- * 		)
- * )
- * $controller_token = array(
- * 		'name' => 'users',
- * 		'sub_designation' => ''
- * )
- * $post_controller_tokens = array(
- * 		'0' => array(
- * 			'name' => 'edit',
- * 			'sub_designation' => ''
- * 		),
- * 		'1' => array(
- * 			'name' => '42',
- * 			'sub_designation' => ''
- * 		)
- * )
+ * request portion (/users.admin/edit/42) is tokenized: array('users','edit','42')
  *
  */
 class Util_Router {
@@ -60,14 +29,14 @@ class Util_Router {
     private $protocol;
     private $subdomain;
     private $domain;
-    private $context;
+    private $controller_context;
     private $controller;
     private $action;
-    private $arguments;
+    private $arguments=array();
     private $parameters;
     
     private $getable_attributes = array(
-        'protocol','subdomain','domain','context','controller','action','arguments',
+        'protocol','subdomain','domain','controller_context','controller','action','arguments',
         'request_method','response_type', 'request_path_segments', 'parameters',
         'debug_requested'
     );
@@ -109,7 +78,7 @@ class Util_Router {
         $this->determine_requested_response_type();
 
         $this->parameters = array_diff_key($_GET,$this->strip_from_request);
-        $this->debug_requested = isset($this->parameters['debug'])&&$this->parameters['debug'];
+        $this->debug_requested = isset($this->parameters['debug'])&&$this->parameters['debug']  || ENV::DEBUG_ALWAYS;
 //        var_dump($this);die;
 	}
 
@@ -166,11 +135,10 @@ class Util_Router {
         foreach ($this->request_path_segments as $segemnt_index => $request_path_segment) {
             // if context is not already set, check for it
             $segment_parts = $this->get_segment_value_suffix_parts($request_path_segment);
-            if (! $this->context && ! $this->controller && in_array($segment_parts['value'],$this->custom_contexts)) {
-                $this->context = $this->record_request_segment(self::CONTEXT, $request_path_segment);
-            // set the $requested_url_controller_index to the first non dir in the request path
-            } else if(! $this->controller) {
+            if(! $this->controller) {
                 $this->controller = $this->record_request_segment(self::CONTROLLER, $request_path_segment);
+                $this->controller_context = $this->request_segment_suffixes[self::CONTROLLER];
+//                var_dump($this);
             } else if(! $this->action) { // controller has been set so look to set action
                 $this->action = $this->record_request_segment(self::ACTION, $request_path_segment);
             } else { // context,controller,action set so put rest in arguments
@@ -178,6 +146,7 @@ class Util_Router {
                 $this->arguments = $this->record_request_segment(
                         self::ARGUMENT, array_slice($this->request_path_segments, $segemnt_index)
                 );
+                $this->arguments = $this->arguments ? $this->arguments : array();
             }
         }
     }

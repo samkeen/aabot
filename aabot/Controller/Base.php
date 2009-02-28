@@ -233,15 +233,15 @@ abstract class Controller_Base {
 	}
 	private function determine_requested_action() {
 		$possible_action = $this->router->action;
-        $possible_action = $this->router->context!==null ? $this->router->context.'__'.$possible_action: $possible_action;
-		if($possible_action!==null && method_exists($this,$possible_action)) {
+        $possible_action = $this->router->controller_context!==null ? $this->router->controller_context.'__'.$possible_action: $possible_action;
+        if($possible_action!==null && method_exists($this,$possible_action)) {
 			$this->requested_action = $possible_action;
 			$this->logger->debug(__METHOD__.'  Action was found to be: '.$this->requested_action);	
 		} else { // use the default action
 			if (!empty($this->router->action)) { // non-existant action so 404
                 $this->logger->warn(__METHOD__.'  Did not find requested Action['.$possible_action.'] Sending to File not found');
             } else { // no requested action so use default
-                $this->requested_action = $this->router->context ? $this->router->context.'__'.CONSTS::$DEFAULT_ACTION:CONSTS::$DEFAULT_ACTION;
+                $this->requested_action = $this->router->controller_context ? $this->router->controller_context.'__'.CONSTS::$DEFAULT_ACTION:CONSTS::$DEFAULT_ACTION;
                 $this->logger->debug(__METHOD__.' No action supplied, using default action ['.$this->requested_action .']');
             }
 		}
@@ -268,7 +268,7 @@ abstract class Controller_Base {
         $template_path = str_replace('//', '/', $template_path);
         $request_file_path_segments = $this->router->request_path_segments;
         // remove context
-        unset ($request_file_path_segments[$this->router->context]);
+        unset ($request_file_path_segments[$this->router->controller_context]);
 		// look for template starting with all request segments and then working down
 		for($index=count($this->router->arguments);$index>=1;$index--) {
 			$segment_names = array_slice($this->router->arguments,0,$index);
@@ -281,8 +281,8 @@ abstract class Controller_Base {
 		}
 		// look for a template for the action
 		if ( ! $deepest_template_file_path) { 
-            $file_path = $this->router->context !== null
-                ? $this->router->context .'/'.$this->view_dir_name.'/'.str_replace($this->router->context.'__', '', $this->requested_action).'.php'
+            $file_path = $this->router->controller_context !== null
+                ? $this->router->controller_context .'/'.$this->view_dir_name.'/'.str_replace($this->router->controller_context.'__', '', $this->requested_action).'.php'
                 : $this->view_dir_name.'/'.$this->requested_action.'.php';
 			$this->logger->debug(__METHOD__.' trying template match for: '.ENV::PATH('TEMPLATE_DIR','/').$file_path);
 			if ($deepest_template_file_path = ENV::get_template_path($file_path) ) {
@@ -291,8 +291,8 @@ abstract class Controller_Base {
 		}
 		// finally look for a template for the contoller
 		if ( ! $deepest_template_file_path) {
-            $file_path = $this->router->context !== null
-                ? $this->router->context .'/'.$this->view_dir_name.'.php'
+            $file_path = $this->router->controller_context !== null
+                ? $this->router->controller_context .'/'.$this->view_dir_name.'.php'
                 : $this->view_dir_name.'.php';
 			$this->logger->debug(__METHOD__.' trying template match for: '.ENV::PATH('TEMPLATE_DIR','/').$file_path);
 			if ($deepest_template_file_path = ENV::get_template_path($file_path)) {

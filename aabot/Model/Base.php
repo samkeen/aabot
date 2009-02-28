@@ -47,8 +47,7 @@ abstract class Model_Base {
 		$this->db_handle = $db_handle;
 		$this->attribute_definitions = array_merge($this->attribute_definitions, $this->base_attribute_definitions);
 		if (isset($this->relations['belongs_to'])) {
-			$belongs_to = explode(',',$this->relations['belongs_to']);
-			foreach ($belongs_to as $relation) {
+            foreach ($this->relations['belongs_to'] as $relation => $relation_meta) {
 				$this->attribute_definitions[strtolower($relation).'_id'] = 'int';
 			}
 		}
@@ -226,6 +225,29 @@ abstract class Model_Base {
             }
         }
     }
+    /**
+     * remove all habtm relations for this model
+     */
+    protected function remove_habtm_relations() {
+        foreach ($this->relations['has_and_belongs_to_many'] as $relation => $relation_meta) {
+            $delete_statement = $this->build_delete_statement($this->join_table($relation),array($this->model_id_name));
+            try {
+                if( ! $statement = $this->db_handle->prepare($delete_statement)) {
+                    ENV::$log->error(__METHOD__.' - $statement::prepare failed for query: '
+                        .$delete_statement."\n".print_r($this->db_handle->errorInfo(),1));
+                }
+                $statement->bindValue(':'.$this->model_id_name, $this->id);
+                $rows_affected = $statement->execute();
+                if ($rows_affected===false) {
+                    ENV::$log->error(__METHOD__.' - $statement->execute() failed for query: '
+                        .$delete_statement."\n".print_r($statement->errorInfo(),1));
+                }
+            } catch (Exception $e) {
+                ENV::$log->error(__METHOD__.'-'.$e->getMessage());
+            }
+        }
+        
+    }
 	public function delete() {
 		if ($this->id !== null) {
 			$result = null;
@@ -234,6 +256,7 @@ abstract class Model_Base {
 				$statement = $this->db_handle->prepare($delete_sql);
 				$statement->bindValue(':'.$this->model_id_name, $this->id);
 				$result = $statement->execute();
+                $this->remove_habtm_relations();
 			} catch (Exception $e) {
 				ENV::$log->error(__METHOD__.'-'.$e->getMessage());
 			}
@@ -302,7 +325,8 @@ abstract class Model_Base {
             $results = $this->_find(null,$related_model,false);
 
         }
-        return $this->apply_return_structure(array('id'=>'name'), $results);
+        $results = $this->apply_return_structure(array($related_model.'_id'=>'name'), $results);
+        return $results ? $results : array();
     }
 	/**
 	 * ex: 
@@ -461,35 +485,37 @@ abstract class Model_Base {
      * WHERE `user_id` IN (:user_id0, :user_id1)
      */
     private function attach_habtm_data($find_results) {
-        foreach (array_get_else($this->relations,'has_and_belongs_to_many',array()) as $model => $relation_meta) {
-            $id_placeholders = implode(', ',array_fill(0,count($find_results),'?'));
-            $save_statement = "SELECT `{$model}_id`, `{$this->model_id_name}` FROM `{$this->join_table($model)}` "
-                ."WHERE {$this->model_id_name} IN ($id_placeholders) ";
+        if($find_results) {
+            foreach (array_get_else($this->relations,'has_and_belongs_to_many',array()) as $model => $relation_meta) {
+                $id_placeholders = implode(', ',array_fill(0,count($find_results),'?'));
+                $save_statement = "SELECT `{$model}_id`, `{$this->model_id_name}` FROM `{$this->join_table($model)}` "
+                    ."WHERE {$this->model_id_name} IN ($id_placeholders) ";
 
-            ENV::$log->debug(__METHOD__.' QUERY to attach HABTM: '.$save_statement);
-            $statement = null;
-            $results = array();
-			try {
-				if( ! $statement = $this->db_handle->prepare($save_statement)) {
-					ENV::$log->error(__METHOD__.' - $statement::prepare failed for query: '
-						.$save_statement."\n".print_r($this->db_handle->errorInfo(),1));
-				}
-				foreach ($find_results as $index => $find_result) {
-                    $statement->bindParam($index+1, $find_results[$index][$this->model_id_name]);
-                }
-				$statement->execute();
-                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-			} catch (Exception $e) {
-				ENV::$log->error(__METHOD__.'-'.$e->getMessage());
-			}
-            foreach ($find_results as &$find_result) {
-                foreach ($results as $index => $result) {
-                    if($result[$this->model_id_name]==$find_result[$this->model_id_name]) {
-                        $find_result[$model][] = $result[$model.'_id'];
-                        unset($results[$index]);
+                ENV::$log->debug(__METHOD__.' QUERY to attach HABTM: '.$save_statement);
+                $statement = null;
+                $results = array();
+                try {
+                    if( ! $statement = $this->db_handle->prepare($save_statement)) {
+                        ENV::$log->error(__METHOD__.' - $statement::prepare failed for query: '
+                            .$save_statement."\n".print_r($this->db_handle->errorInfo(),1));
                     }
+                    foreach ($find_results as $index => $find_result) {
+                        $statement->bindParam($index+1, $find_results[$index][$this->model_id_name]);
+                    }
+                    $statement->execute();
+                    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+                } catch (Exception $e) {
+                    ENV::$log->error(__METHOD__.'-'.$e->getMessage());
                 }
-                $find_result[$model] = isset ($find_result[$model]) ? $find_result[$model] : array();
+                foreach ($find_results as &$find_result) {
+                    foreach ($results as $index => $result) {
+                        if($result[$this->model_id_name]==$find_result[$this->model_id_name]) {
+                            $find_result[$model][] = $result[$model.'_id'];
+                            unset($results[$index]);
+                        }
+                    }
+                    $find_result[$model] = isset ($find_result[$model]) ? $find_result[$model] : array();
+                }
             }
         }
         return $find_results;
