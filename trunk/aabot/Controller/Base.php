@@ -267,9 +267,6 @@ abstract class Controller_Base {
 		$template_path = $this->view_dir_name.'/'.$this->router->action.'/';
         $template_path = str_replace('//', '/', $template_path);
         $request_file_path_segments = $this->router->request_path_segments;
-        // remove context
-        unset ($request_file_path_segments[$this->router->controller_context]);
-		// look for template starting with all request segments and then working down
 		for($index=count($this->router->arguments);$index>=1;$index--) {
 			$segment_names = array_slice($this->router->arguments,0,$index);
 			$possible_template_file = $template_path.implode('/',$segment_names).".php";
@@ -282,7 +279,7 @@ abstract class Controller_Base {
 		// look for a template for the action
 		if ( ! $deepest_template_file_path) { 
             $file_path = $this->router->controller_context !== null
-                ? $this->router->controller_context .'/'.$this->view_dir_name.'/'.str_replace($this->router->controller_context.'__', '', $this->requested_action).'.php'
+                ? $this->view_dir_name.'/'.$this->router->controller_context .'/'.str_replace($this->router->controller_context.'__', '', $this->requested_action).'.php'
                 : $this->view_dir_name.'/'.$this->requested_action.'.php';
 			$this->logger->debug(__METHOD__.' trying template match for: '.ENV::PATH('TEMPLATE_DIR','/').$file_path);
 			if ($deepest_template_file_path = ENV::get_template_path($file_path) ) {
@@ -291,9 +288,7 @@ abstract class Controller_Base {
 		}
 		// finally look for a template for the contoller
 		if ( ! $deepest_template_file_path) {
-            $file_path = $this->router->controller_context !== null
-                ? $this->router->controller_context .'/'.$this->view_dir_name.'.php'
-                : $this->view_dir_name.'.php';
+            $file_path = $this->view_dir_name.'.php';
 			$this->logger->debug(__METHOD__.' trying template match for: '.ENV::PATH('TEMPLATE_DIR','/').$file_path);
 			if ($deepest_template_file_path = ENV::get_template_path($file_path)) {
 				$this->logger->debug(__METHOD__.' Found deepest template file match[controller]: '.ENV::PATH('TEMPLATE_DIR','/').$file_path);
