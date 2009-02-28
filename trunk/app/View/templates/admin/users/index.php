@@ -10,8 +10,8 @@
 <td><?php h($user['xmpp_jid']); ?></td>
 <td><?php h($user['age']); ?></td>
 <td><?php h($user['active']?'Y':'N'); ?></td>
-<td><a href="/admin/users/view/<?php h($user['user_id']); ?>">view</a> :<a href="/admin/users/edit/<?php h($user['user_id']); ?>">edit</a> : <a href="/admin/users/delete/<?php h($user['user_id']); ?>">delete</a></td>
+<td><a href="/users.admin/view/<?php h($user['user_id']); ?>">view</a> :<a href="/users.admin/edit/<?php h($user['user_id']); ?>">edit</a> : <a href="/users.admin/delete/<?php h($user['user_id']); ?>">delete</a></td>
 </tr>
 <?php } ?>
 </table>
-<a href="/admin/users/add">Add User</a>
+<a href="/users.admin/add">Add User</a>

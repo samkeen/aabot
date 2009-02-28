@@ -2,6 +2,7 @@
 final class ENV {
 	
 	public static $log;
+    CONST DEBUG_ALWAYS = true;
 	
 	public static final function load_vendor_file($vendor_package_name) {
 		$success = false;
@@ -32,7 +33,7 @@ final class ENV {
 			return $PATH__APP_ROOT.CONSTS::$$path.$append;
 		}	
 	}
-	public static final function get_controller_classname($requested_controller_name, $relative_path) {
+	public static final function get_controller_classname($requested_controller_name) {
 		global $PATH__APP_ROOT, $logger;
 		$controller_classname = null;
 		$requested_controller_name = self::classifyName($requested_controller_name);

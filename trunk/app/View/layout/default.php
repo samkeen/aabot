@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="page-header">
-<h1>Extapi</h1>
+<h1>Aabot</h1>
 <div id="feedback-output"><?php echo $feedback; ?></div>
 </div>
 <div id="body-content">
