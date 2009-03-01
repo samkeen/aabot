@@ -16,8 +16,11 @@ abstract class Controller_Base {
 	protected $view_dir_name;
 	protected $router;
 	protected $requested_action = null;
-	
-	protected $feedback = null;
+	/**
+     *
+     * @var Controller_Helper_Feedback
+     */
+	protected $feedback;
 	
 	// these are ment to be overridden in Controllers
 	protected $use_template = true;
@@ -32,7 +35,6 @@ abstract class Controller_Base {
 	protected $rendered_template;
 	
 	
-	
 	/**
 	 * Enter description here...
 	 *
@@ -40,6 +42,7 @@ abstract class Controller_Base {
 	 */
 	public function __construct(Util_Router $router) {
 		global $logger;
+        $this->feedback = new Controller_Helper_Feedback();
 		$this->logger = $logger;
 		$this->router = $router;
 		$this->name = strtolower(str_replace('Controller_','',get_class($this)));
@@ -206,7 +209,7 @@ abstract class Controller_Base {
 		// set a short name ref to $this->payload for ease of use in the view.
 		$payload = $this->payload;
 		$feedback = $this->feedback;
-		$form = new View_Form($this);
+        $form = new View_Form($this);
 		ob_start();
 		include($this->template_file);
 		if ($this->use_layout) {
