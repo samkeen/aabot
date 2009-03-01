@@ -43,7 +43,6 @@ class Controller_Helper_Feedback {
      */
     public function get($key=null) {
         $feedback = array();
-        // if 2 args, consider $key
         if($key!==null && array_get_else($_SESSION[self::SESSION_KEY],$key)) {
             $feedback = $_SESSION[self::SESSION_KEY][$key];
             unset($_SESSION[self::SESSION_KEY][$key]);
@@ -52,6 +51,23 @@ class Controller_Helper_Feedback {
             $_SESSION[self::SESSION_KEY] = array();
         }
         return $feedback;
+    }
+
+    public function html($key=null) {
+        $feedback = '<ul id="primary_feedback">'."\n";
+        if($key!==null && array_get_else($_SESSION[self::SESSION_KEY],$key)) {
+            $messages = $_SESSION[self::SESSION_KEY][$key];
+            unset($_SESSION[self::SESSION_KEY][$key]);
+        } else { // consider $value
+            $messages = array_get_else($_SESSION[self::SESSION_KEY],self::DEFAULT_FEEDBACK_KEY);
+            $_SESSION[self::SESSION_KEY] = array();
+        }
+        if($messages) {
+            foreach ($messages as $message) {
+                $feedback.="\t<li>".h($message,false)."</li>\n";
+            }
+            echo "{$feedback}\n</ul>";
+        }
     }
 }
 ?>
