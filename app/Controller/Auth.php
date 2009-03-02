@@ -4,7 +4,7 @@
  * 
  *
  */
-class Controller_Users extends Controller_Base {
+class Controller_Auth extends Controller_Base {
 	
 	protected function init() {
 		$this->default_response_type = CONSTS::$RESPONSE_HTML;
@@ -12,15 +12,20 @@ class Controller_Users extends Controller_Base {
 	/**
 	 * show list of users
 	 */
-	protected function admin__index() {
-		$user = new Model_User();
-		$this->payload->users = $user->find();
+	protected function login() {
+        if ($this->recieved_form_data) {
+            if($this->auth->authenticate($this->form_data)) {
+                $this->redirect('/');
+            } else {
+                $this->feedback->add("Login failed, Username and/or Password was incorrect");
+			}
+        }
 	}
 
-	protected function admin__view() {
-		$user = new Model_User();
-		$user->set('user_id',$this->arguments__first);
-		$this->payload->user = new SimpleDTO($user->findOne());
+	protected function logout() {
+		$this->auth->deauthenticate();
+		$this->feedback->add("Logout successful");
+        $this->redirect('/');
 	}
 	
 	protected function admin__add() {
