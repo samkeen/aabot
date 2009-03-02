@@ -21,6 +21,11 @@ abstract class Controller_Base {
      * @var Controller_Helper_Feedback
      */
 	protected $feedback;
+    /**
+     *
+     * @var Model_Helper_Auth
+     */
+    protected $auth;
 	
 	// these are ment to be overridden in Controllers
 	protected $use_template = true;
@@ -43,6 +48,8 @@ abstract class Controller_Base {
 	public function __construct(Util_Router $router) {
 		global $logger;
         $this->feedback = new Controller_Helper_Feedback();
+        $this->auth = new Model_Helper_Auth();
+        
 		$this->logger = $logger;
 		$this->router = $router;
 		$this->name = strtolower(str_replace('Controller_','',get_class($this)));

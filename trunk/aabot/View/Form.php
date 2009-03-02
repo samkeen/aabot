@@ -1,7 +1,6 @@
 <?php
 class View_Form {
 	
-	
 	private $controller;
 	private $model_name;
 	private $model_id_name;
@@ -32,9 +31,16 @@ class View_Form {
 		}
 		echo $form_close;
 	}
-	
+	/**
+     *
+     * @param string $input_name
+     * @param array $options
+     * - options
+     *   - textarea
+     *   - password
+     */
 	public function text($input_name, $options=array()) {
-		//  value="$this->form_get('name')"
+		// value="$this->form_get('name')"
 		$names = $this->model_field_names($input_name);
 		$value = $this->form_action=='edit' ? $this->form_get($names['field']) : '';
         if(in_array('textarea', $options)) {
@@ -43,9 +49,10 @@ class View_Form {
                 .'<textarea id="'.$names['model'].'-'.$names['field'].'" name="'.$names['model'].'['.$names['field'].']" '
                 ." >{$value}</textarea></p>\n";
         } else {
+            $type = $input_name=='password'||in_array('password',$options) ? 'password':'text';
             // <p><label for="channel-name">Name:</label><input id="channel-name" name="channel[name]" type="text" ></p>
             echo '<p><label for="'.$names['model'].'-'.$names['field'].'">'.$this->labelize_name($names['field']).'</label>'
-                .'<input id="'.$names['model'].'-'.$names['field'].'" name="'.$names['model'].'['.$names['field'].']" type="text"'
+                .'<input id="'.$names['model'].'-'.$names['field'].'" name="'.$names['model'].'['.$names['field'].']" type="'.$type.'"'
                 .'value="'.$value.'" '
                 ." ></p>\n";
         }

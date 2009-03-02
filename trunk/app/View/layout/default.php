@@ -9,7 +9,7 @@
 <body>
 <div id="page-header">
 <h1>Aabot</h1>
-<div id="feedback-output"><?php echo $feedback; ?></div>
+<?php $feedback->html(); ?>
 </div>
 <div id="body-content">
 <?php echo $this->rendered_template; ?>

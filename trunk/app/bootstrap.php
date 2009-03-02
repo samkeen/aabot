@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 $PATH__WEB_ROOT = dirname(dirname(__FILE__));
 $PATH__APP_ROOT = $PATH__WEB_ROOT.'/app';
 $PATH__FRAMWORK_ROOT = $PATH__WEB_ROOT.'/aabot';
