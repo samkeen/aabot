@@ -16,6 +16,21 @@ abstract class Controller_Base {
 	protected $view_dir_name;
 	protected $router;
 	protected $requested_action = null;
+
+    private $actions_to_authenticate = array();
+    /*
+     * ex: array(
+     *  0 => array(
+     *      'actions' => array('add','edit'),
+     *      'groups' => array('steward', 'admin')
+     *  ),
+     *  1 => array(
+     *      'actions' => array('delete'),
+     *      'groups' => array('admin')
+     *  )
+     *  first match found is acted on (parsing starts at zero)
+     */
+    private $actions_to_authorize = array();
 	/**
      *
      * @var Controller_Helper_Feedback
@@ -206,6 +221,43 @@ abstract class Controller_Base {
 			? '<ul><li>'.implode('</li><li>',$this->debug_messages).'</li></ul>' 
 			: implode("\n",$this->debug_messages);
 	}
+    /**
+     * Meant to be called in a Controller's init() method to set up what will
+     * authenticated.
+     *
+     * @param mixed [optiona] $actions_to_authenticate If given can be array or
+     * comma delim string.  If null, considered all actions
+     */
+    protected function authenticate($actions_to_authenticate=null) {
+        if($actions_to_authenticate===null) {
+           $this->actions_to_authenticate = array('__ALL'); 
+        } else {
+            $this->actions_to_authenticate = !is_array($actions_to_authenticate)
+                ? explode(',', $actions_to_authenticate)
+                :$actions_to_authenticate;
+        }
+    }
+    /**
+     * Meant to be called in a Controller's init() method to set up what will
+     * authorized.
+     *
+     * @param mixed $authorized_groups array or commma delim string
+     * @param mixed [optional] $actions_to_authorize array or commma
+     * delim string.    If null, considered all actions
+     */
+    protected function authorize($authorized_groups, $actions_to_authorize=null) {
+        $authorized_groups = !is_array($authorized_groups)
+                ? explode(',', $authorized_groups)
+                :$authorized_groups;
+        if($actions_to_authorize===null) {
+           $actions_to_authorize = array('__ALL');
+        } else {
+            $actions_to_authorize = !is_array($actions_to_authorize)
+                ? explode(',', $actions_to_authorize)
+                :$actions_to_authorize;
+        }
+        $this->actions_to_authorize[$actions_to_authorize] = $authorized_groups;
+    }
 	/**
 	 * Stores the rendered contents of the template in 
 	 * $rendered_template to to be included in the layout
@@ -239,8 +291,15 @@ abstract class Controller_Base {
 	private function call_action($action=null) {
 		$the_action = $action!==null?$action:$this->requested_action;
 		$this->logger->debug(__METHOD__.' Invoking Action [' . $the_action .'] ');
-		$this->$the_action();
+        $this->auth->validate_credentials($the_action);
+        $this->$the_action();
 	}
+
+    private function validate_credentials($the_action) {
+        // check if authenticated
+
+        // check if authorized
+    }
 	private function determine_requested_action() {
 		$possible_action = $this->router->action;
         $possible_action = $this->router->controller_context!==null ? $this->router->controller_context.'__'.$possible_action: $possible_action;
