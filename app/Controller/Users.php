@@ -8,6 +8,8 @@ class Controller_Users extends Controller_Base {
 	
 	protected function init() {
 		$this->default_response_type = CONSTS::$RESPONSE_HTML;
+        $this->authenticate();
+        $this->authorize("admin");
 	}
 	/**
 	 * show list of users
