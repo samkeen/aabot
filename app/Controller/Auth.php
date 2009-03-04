@@ -14,7 +14,7 @@ class Controller_Auth extends Controller_Base {
 	 */
 	protected function login() {
         if ($this->recieved_form_data) {
-            if($this->auth->authenticate($this->form_data)) {
+            if($this->auth->login($this->form_data)) {
                 $this->redirect('/');
             } else {
                 $this->feedback->add("Login failed, Username and/or Password was incorrect");
