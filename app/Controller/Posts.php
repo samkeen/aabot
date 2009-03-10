@@ -7,7 +7,8 @@
 class Controller_Posts extends Controller_Base {
 	
 	protected function init() {
-		
+        // $this->authenticate()->authorize('__owner', array('edit', 'delete'));
+		$this->authenticate()->authorize('__owner');
 	}
 	/**
 	 * show list of users

@@ -264,8 +264,17 @@ abstract class Controller_Base {
 	private function call_action($action=null) {
 		$the_action = $action!==null?$action:$this->requested_action;
 		$this->logger->debug(__METHOD__.' Invoking Action [' . $the_action .'] ');
-        $this->auth->validate_credentials($the_action);
-        $this->$the_action();
+        if( $this->auth->validate_credentials($the_action, $this->router->raw_request_path) ) {
+            $this->$the_action();
+        } else {
+            if($this->auth->failed_for=='authentication') {
+                $this->feedback->add('Authentication Required');
+                $this->redirect(Model_Helper_Auth::AUTH_FAIL_REDIRECT, true); 
+            } else {
+                $this->feedback->add('You do not have the propor authority for the requested action');
+                $this->redirect(Model_Helper_Auth::AUTH_FAIL_REDIRECT, true);
+            }
+        }
 	}
 
 	private function determine_requested_action() {
