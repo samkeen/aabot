@@ -24,6 +24,8 @@ class Util_Router {
     const ACTION = '__action';
     const ARGUMENT = '__argument';
 
+    public $raw_request_path = null;
+
     private $request_path_segments;
 
     private $protocol;
@@ -72,8 +74,8 @@ class Util_Router {
         $domain_parts = array_reverse(explode('.', array_get_else($_SERVER, 'HTTP_HOST')));
         $this->subdomain = array_get_else($domain_parts, 2);
         $this->domain = $domain_parts[1].'.'.$domain_parts[0];
-
-        $this->process_request(array_get_else($_GET, self::REDIRECT_VAR, '/'));
+        $this->raw_request_path = array_get_else($_GET, self::REDIRECT_VAR, '/');
+        $this->process_request($this->raw_request_path);
         $this->request_method = $this->determine_request_method();
         $this->determine_requested_response_type();
 
