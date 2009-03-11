@@ -74,6 +74,13 @@ class Model_Helper_Auth {
     private $authorize_for_owner = false;
 
     private $db_handle = null;
+    private $model_context_name;
+    private $model_context_id;
+
+    public function  __construct($model_name, $model_id) {
+        $this->model_context_name = $model_name;
+        $this->model_context_id = $model_id;
+    }
     /**
      *
      * @return int the id of the user logged in or false if no user logged in;
@@ -179,6 +186,8 @@ class Model_Helper_Auth {
      * @param mixed $authorized_groups array or commma delim string
      * @param mixed [optional] $actions_to_authorize array or commma
      * delim string.    If null, considered all actions
+     * special cases:
+     *  - 'admin__*'  : wildcard to match all actions starting with 'admin__'
      */
     public function authorize($authorized_groups, $actions_to_authorize=null) {
         $authorized_groups = ! is_array($authorized_groups)
@@ -225,20 +234,32 @@ class Model_Helper_Auth {
     }
     private function has_group_for_action($requested_action) {
         $has_group = null;
+        $found_authorization_rule_for_action = false;
         $logged_in_groups = array_get_else($_SESSION[self::AUTHENTICATE_SESSION_KEY],self::AUTHORIZE_GROUPS_SESSION_KEY, array());
+        // first check if we are doing a special case '__owner' auth.
+        if( $this->authorize_for_owner
+            && in_array($requested_action, $this->owner_actions_to_authorize)
+            && $this->is_owner()) {
+            ENV::$log->debug(__METHOD__." Logged in user [".$this->logged_in()."] found to be owner of model [{$this->model_context_name}] with id [{$this->model_context_id}]");
+            return true;
+        }
         foreach ($this->actions_to_authorize as $authorizations) {
             if(in_array('__ALL', $authorizations['actions']) || in_array($requested_action, $authorizations['actions']) )  {
                 if(ENV::$log->debug()){
                     ENV::$log->debug(__METHOD__." Authorizing agaist first found mathch for action [{$requested_action}] "
                         ." actions[".implode(', ', $authorizations['actions'])."] => authorizations [".implode(', ', $authorizations['groups'])."]");
                 }
+                $found_authorization_rule_for_action = true;
                 $has_group = array_intersect($logged_in_groups, $authorizations['groups']);
                 if(!empty($has_group)) {
                     break;
                 }
             }
         }
-        if(ENV::$log->debug() && !empty($has_group)){
+        if( ! $found_authorization_rule_for_action) {
+            ENV::$log->debug(__METHOD__." no authorization rules found for requested action [{$requested_action}] ");
+            $has_group = true;
+        } else if(ENV::$log->debug() && !empty($has_group)){
             ENV::$log->debug(__METHOD__." User authorized for action [{$requested_action}] "
                 ." since they have group(s) [".implode(', ', $has_group)."]");
         } else if(empty($has_group)) {
@@ -262,15 +283,22 @@ class Model_Helper_Auth {
         return hash('sha1',$password.self::HASH_SALT);
     }
 
-    private function is_owner($possession_model_name, $possesion_id) {
-        $owned = false;
-        if($logged_in_user_id = $this->logged_in()) {
-            $statement_text = "SELECT `user_id` FROM `{$possession_model_name}` WHERE `{$possession_model_name}_is` = :posession_id AND `user_id` = :user_id";
-            $statement = $this->db_handle->prepare($statement_text);
-            $statement->bindValue(':user_id', $logged_in_user_id);
-            ENV::$log->debug(__METHOD__." Executing {$statement_text}, ['{$logged_in_user_id}']");
-            $statement->execute();
-            $owned = (bool)$statement->fetchAll(PDO::FETCH_COLUMN, 0);
+    private function is_owner() {
+        if($this->model_context_name===null || $this->model_context_id===null) {
+            ENV::$log->error(__METHOD__." model name [{$this->model_context_name}] and/or model id [{$this->model_context_id}] empty. cannot authorize __owner");
+            return false;
+        } else {
+            $owned = false;
+            if($logged_in_user_id = $this->logged_in()) {
+                $this->init_db();
+                $statement_text = "SELECT `user_id` FROM `{$this->model_context_name}` WHERE `{$this->model_context_name}_id` = :posession_id AND `user_id` = :user_id";
+                $statement = $this->db_handle->prepare($statement_text);
+                $statement->bindValue(':posession_id', $this->model_context_id);
+                $statement->bindValue(':user_id', $logged_in_user_id);
+                ENV::$log->debug(__METHOD__." Executing {$statement_text}, ['{$this->model_context_id}', '{$logged_in_user_id}']");
+                $statement->execute();
+                $owned = (bool)$statement->fetchAll(PDO::FETCH_COLUMN, 0);
+            }
         }
         return $owned;
     }

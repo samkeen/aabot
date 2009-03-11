@@ -50,7 +50,7 @@ abstract class Controller_Base {
 	public function __construct(Util_Router $router) {
 		global $logger;
         $this->feedback = new Controller_Helper_Feedback();
-        $this->auth = new Model_Helper_Auth();
+        $this->set_model_name();
         
 		$this->logger = $logger;
 		$this->router = $router;
@@ -60,10 +60,11 @@ abstract class Controller_Base {
 		$this->request_method = $this->router->request_method;
 		$this->detect_recieved_data();
 		$this->view_dir_name = $this->router->controller;
-		$this->set_model_name();
+		$this->auth = new Model_Helper_Auth($this->model_name, $this->arguments__first);
 		
 		$this->payload = new SimpleDTO();
 		$this->init();
+        
 	}
 
     /**
@@ -178,6 +179,7 @@ abstract class Controller_Base {
 		}
 		if ($this->use_layout) {
 			// set a short name ref to $this->payload for ease of use in the view.
+            $FW = $this;
 			$payload = $this->payload;
 			$feedback = $this->feedback;
 			include($this->layout_file);
@@ -242,6 +244,7 @@ abstract class Controller_Base {
 		$payload = $this->payload;
 		$feedback = $this->feedback;
         $form = new View_Form($this);
+        $FW = $this;
 		ob_start();
 		include($this->template_file);
 		if ($this->use_layout) {
