@@ -9,6 +9,11 @@
 <body>
 <div id="page-header">
 <h1>Aabot</h1>
+<?php if($FW->auth->logged_in()) { ?>
+<a href="/auth/logout">logout</a>
+<?php } else { ?>
+<a href="/auth/login">login</a>
+<?php } ?>
 <?php $feedback->html(); ?>
 </div>
 <div id="body-content">
