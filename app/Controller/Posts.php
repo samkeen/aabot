@@ -8,7 +8,7 @@ class Controller_Posts extends Controller_Base {
 	
 	protected function init() {
         // $this->authenticate()->authorize('__owner', array('edit', 'delete'));
-		$this->authenticate()->authorize('__owner');
+		$this->authenticate()->authorize('__owner', array('edit', 'delete'));
 	}
 	/**
 	 * show list of users
@@ -27,6 +27,8 @@ class Controller_Posts extends Controller_Base {
 	protected function add() {
 		if ($this->recieved_form_data) {
 			$post = new Model_Post();
+            // set the user id for this post to the logged in user
+            $post->set('user_id',$this->auth->logged_in());
 			if ($post->save($this->form_data)) {
 				$this->feedback = "The Post has been created";
 				$this->redirect('/posts');
