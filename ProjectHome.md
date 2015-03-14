@@ -1,0 +1,1 @@
+A small MVC PHP Framework.  Mostly an academic exercise at this point but initial goal is to implement a simple Blog using aabot.
