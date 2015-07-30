@@ -1,0 +1,179 @@
+FORMAT: 1A
+HOST: http://dev.siqa.us:8080/api
+
+# Pachinko
+
+Pachinko is ...
+
+# Group Program
+
+## Program Create [/facebook/ad-accounts/{adAccountId}/programs]
+
+### Create a Program [POST]
+
++ Parameters
+    + adAccountId: 99 (required, number) - Id of the Igniter Ad Account
+    
++ Request (application/json)
+
+        {
+            "program": {
+                "name": "bob",
+                "budget": 1000,
+                "facebookPageId": 10,
+                "goals": [
+                    {
+                        "type": "CPC",
+                        "value": 500
+                    }
+                ]
+            }
+        }
+
+
++ Response 201 (application/json)
+ 
+        {
+          "program": {
+            "global": false,
+            "id": 2,
+            "facebookPageId": "10",
+            "name": "bob",
+            "budget": 1000,
+            "goals": [
+              {
+                "type": "CPC",
+                "value": 500
+              }
+            ],
+            "created": "2015-07-27T16:39:29+0000",
+            "updated": "2015-07-27T16:39:29+0000"
+          }
+        }
+
+## Program Create [/facebook/ad-accounts/{adAccountId}/programs/{programId}]
+
+### Update a Program [PUT]
+
++ Parameters
+    + adAccountId: 99 (required, number) - Id of the Igniter Ad Account
+    + programId: 1 (required, number) - Id of the Program
+    
++ Request (application/json)
+
+        {
+          "program": {
+            "global": false,
+            "id": 2,
+            "facebookPageId": "10",
+            "name": "bob edit",
+            "budget": 9999,
+            "goals": [
+              {
+                "type": "CPC",
+                "value": 500
+              }
+            ],
+            "igniterAudiences": [
+            {
+              "name": "MX - CoolSculpting - Video Sign Up (pixel id test)",
+              "approximateCount": 20,
+              "rule": "{\"and\":[{\"path\":{\"i_contains\":\"cs-3099-multi-video-awareness2\\/videocarousel\"}},{\"event\":{\"eq\":\"6030827576575\"}}]}",
+              "id": "6026675121399",
+              "type": "custom",
+              "lookalikeAudiences": [
+                {
+                  "name": "MX - CoolSculpting - Video Sign Up (pixel id test) lookalike",
+                  "country": "US",
+                  "optimization": "similarity"
+                }
+              ]
+            },
+            {
+              "id": "10153079548773234",
+              "type": "video",
+              "name": "foom viewer",
+              "action.type": "video_view",
+              "lookalikeAudiences": [
+                {
+                  "name": "foom viewer lookalike",
+                  "country": "US",
+                  "optimization": "similarity"
+                }
+              ]
+            },
+            {
+              "id": "10153079548773234",
+              "type": "video",
+              "name": "foom completer",
+              "action.type": "video_complete",
+              "lookalikeAudiences": [
+                {
+                  "name": "foom completer lookalike",
+                  "country": "US",
+                  "optimization": "similarity"
+                }
+              ]
+            }
+          ],
+            "created": "2015-07-27T16:39:29+0000",
+            "updated": "2015-07-27T16:39:29+0000"
+          }
+        }
+
++ Response 204
+
+# Group IgniterAudiences
+
+## IgniterAudience Collection [/facebook/ad-accounts/{adAccountId}/igniter-audiences]
+
+### List all IgniterAudiences [GET]
+
++ Parameters
+    + adAccountId: 99 (required, number) - Id of the Igniter Ad Account
+
++ Response 200 (application/json)
+ 
+        {
+          "igniterAudiences": [
+            {
+              "name": "MX - CoolSculpting - Video Sign Up (pixel id test)",
+              "approximateCount": 20,
+              "rule": "{\"and\":[{\"path\":{\"i_contains\":\"cs-3099-multi-video-awareness2\\/videocarousel\"}},{\"event\":{\"eq\":\"6030827576575\"}}]}",
+              "id": "6026675121399",
+              "type": "custom"
+            },
+            {
+              "name": "My Test Audience",
+              "approximateCount": 20,
+              "rule": "{\"and\":[{\"or\":[{\"url\":{\"i_contains\":\"pBCBY8\"}}]}]}",
+              "id": "6024671438999",
+              "type": "custom"
+            },
+            {
+              "id": "10153356290083234",
+              "type": "video",
+              "name": " viewer",
+              "action.type": "video_view"
+            },
+            {
+              "id": "10153356290083234",
+              "type": "video",
+              "name": " completer",
+              "action.type": "video_complete"
+            },
+            {
+              "id": "10153079548773234",
+              "type": "video",
+              "name": "foom viewer",
+              "action.type": "video_view"
+            },
+            {
+              "id": "10153079548773234",
+              "type": "video",
+              "name": "foom completer",
+              "action.type": "video_complete"
+            }
+          ]
+        }
+
